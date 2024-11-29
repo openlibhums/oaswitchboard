@@ -1,0 +1,92 @@
+[
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "Whether to send p1-pio notifications",
+      "is_translatable": true,
+      "name": "oas_send",
+      "pretty_name": "Send notifications",
+      "type": "boolean"
+    },
+    "value": {
+      "default": ""
+    }
+  },
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "Whether to run in sandbox mode",
+      "is_translatable": true,
+      "name": "oas_sandbox",
+      "pretty_name": "Sandboxed",
+      "type": "boolean"
+    },
+    "value": {
+      "default": ""
+    }
+  },
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "The URL to notify on article publication",
+      "is_translatable": true,
+      "name": "oas_url",
+      "pretty_name": "Notification URL for p1-pio messages",
+      "type": "char"
+    },
+    "value": {
+      "default": "https://api.oaswitchboard.org/v2/"
+    }
+  },
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "The sandbox URL to notify on article publication",
+      "is_translatable": true,
+      "name": "oas_sandbox_url",
+      "pretty_name": "Sandbox notification URL for p1-pio messages",
+      "type": "char"
+    },
+    "value": {
+      "default": "https://sandboxapi.oaswitchboard.org/v2/"
+    }
+  },
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "The email to authorize with the switchboard",
+      "is_translatable": true,
+      "name": "oas_email",
+      "pretty_name": "The email credential",
+      "type": "char"
+    },
+    "value": {
+      "default": "your@email.com"
+    }
+  },
+  {
+    "group": {
+      "name": "plugin:oaswitchboard_plugin"
+    },
+    "setting": {
+      "description": "The password to authorize with the switchboard",
+      "is_translatable": true,
+      "name": "oas_password",
+      "pretty_name": "The password credential",
+      "type": "char"
+    },
+    "value": {
+      "default": ""
+    }
+  }
+]
