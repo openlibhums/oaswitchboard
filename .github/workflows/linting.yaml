@@ -18,3 +18,4 @@ jobs:
         with:
             line-length: '79'
             path: '.'
+            include: '.'
