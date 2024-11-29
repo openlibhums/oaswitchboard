@@ -1,0 +1,20 @@
+name: Formatting and linting
+on:
+  - push
+
+jobs:
+  isort:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: isort/isort-action@v1
+        with:
+            requirements-files: "requirements.txt"
+            configuration: "--check-only --profile=black --line-length=79"
+  python-black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: rodrigogiraoserrao/python-black-check@master
+        with:
+            line-length: '79'
+            path: '.'
