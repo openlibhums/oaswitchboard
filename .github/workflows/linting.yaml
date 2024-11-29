@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: rodrigogiraoserrao/python-black-check@master
+      - uses: astral-sh/ruff-action@v1
         with:
-            line-length: '79'
-            path: '.'
+            args: "--check --line-length 79 ."
