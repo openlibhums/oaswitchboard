@@ -11,10 +11,10 @@ jobs:
         with:
             requirements-files: "requirements.txt"
             configuration: "--check-only --profile=black --line-length=79"
-  python-black:
+  python-ruff:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/ruff-action@v1
         with:
-            args: "--check --line-length 79 ."
+            args: "format --check --line-length 79 ."
