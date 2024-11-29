@@ -9,9 +9,13 @@ from utils import setting_handler
 
 
 def manager(request):
-    oas_enabled = request.journal.get_setting("plugin:oaswitchboard_plugin", "oas_send")
+    oas_enabled = request.journal.get_setting(
+        "plugin:oaswitchboard_plugin", "oas_send"
+    )
 
-    oas_email = request.journal.get_setting("plugin:oaswitchboard_plugin", "oas_email")
+    oas_email = request.journal.get_setting(
+        "plugin:oaswitchboard_plugin", "oas_email"
+    )
 
     oas_sandbox = request.journal.get_setting(
         "plugin:oaswitchboard_plugin", "oas_sandbox"
@@ -21,7 +25,9 @@ def manager(request):
         "plugin:oaswitchboard_plugin", "oas_password"
     )
 
-    oas_url = request.journal.get_setting("plugin:oaswitchboard_plugin", "oas_url")
+    oas_url = request.journal.get_setting(
+        "plugin:oaswitchboard_plugin", "oas_url"
+    )
 
     oas_sandbox_url = request.journal.get_setting(
         "plugin:oaswitchboard_plugin", "oas_sandbox_url"
