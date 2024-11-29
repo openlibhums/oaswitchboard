@@ -3,13 +3,12 @@ __author__ = "Martin Paul Eve"
 __license__ = "AGPL v3"
 __maintainer__ = "Birkbeck University of London"
 
-from django.shortcuts import get_object_or_404, redirect, render
-from plugins.oas import forms, plugin_settings
-from utils import models, setting_handler
+from django.shortcuts import render
+from plugins.oas import forms
+from utils import setting_handler
 
 
 def manager(request):
-
     oas_enabled = request.journal.get_setting(
         "plugin:oaswitchboard_plugin", "oas_send"
     )
