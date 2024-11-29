@@ -14,6 +14,7 @@ jobs:
   python-black:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: rodrigogiraoserrao/python-black-check@master
         with:
             line-length: '79'
