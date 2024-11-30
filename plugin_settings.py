@@ -11,8 +11,6 @@ SHORT_NAME = "oas"
 MANAGER_URL = "oas_manager"
 JANEWAY_VERSION = "1.7.0"
 
-ON_ARTICLE_PUBLISHED = "on_article_published"
-
 
 class OasPlugin(plugins.Plugin):
     plugin_name = PLUGIN_NAME
@@ -39,6 +37,6 @@ def register_for_events():
     from plugins.oas import logic
 
     events_logic.Events.register_for_event(
-        ON_ARTICLE_PUBLISHED,
+        events_logic.Events.ON_ARTICLE_PUBLISHED,
         logic.publication_event_handler,
     )

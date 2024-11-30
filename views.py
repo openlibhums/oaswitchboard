@@ -5,33 +5,18 @@ __maintainer__ = "Birkbeck University of London"
 
 from django.shortcuts import render
 from plugins.oas import forms
-from utils import setting_handler
+from oas.logic import get_plugin_settings, save_plugin_settings
 
 
 def manager(request):
-    oas_enabled = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_send"
-    )
-
-    oas_email = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_email"
-    )
-
-    oas_sandbox = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_sandbox"
-    )
-
-    oas_password = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_password"
-    )
-
-    oas_url = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_url"
-    )
-
-    oas_sandbox_url = request.journal.get_setting(
-        "plugin:oaswitchboard_plugin", "oas_sandbox_url"
-    )
+    (
+        oas_enabled,
+        oas_email,
+        oas_sandbox,
+        oas_password,
+        oas_url,
+        oas_sandbox_url,
+    ) = get_plugin_settings(request)
 
     if request.POST:
         form = forms.OASManagerForm(request.POST)
@@ -44,46 +29,14 @@ def manager(request):
             oas_url = form.cleaned_data["url"]
             oas_sandbox_url = form.cleaned_data["sandbox_url"]
 
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_send",
-                journal=request.journal,
-                value=oas_enabled,
-            )
-
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_email",
-                journal=request.journal,
-                value=oas_email,
-            )
-
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_sandbox",
-                journal=request.journal,
-                value=oas_sandbox,
-            )
-
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_password",
-                journal=request.journal,
-                value=oas_password,
-            )
-
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_url",
-                journal=request.journal,
-                value=oas_url,
-            )
-
-            setting_handler.save_setting(
-                setting_group_name="plugin:oaswitchboard_plugin",
-                setting_name="oas_sandbox_url",
-                journal=request.journal,
-                value=oas_sandbox_url,
+            save_plugin_settings(
+                oas_email,
+                oas_enabled,
+                oas_password,
+                oas_sandbox,
+                oas_sandbox_url,
+                oas_url,
+                request,
             )
 
     else:
