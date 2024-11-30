@@ -46,24 +46,26 @@ def publication_event_handler(**kwargs):
     # setup switchboard option
     switchboard = oas_sandbox and oas_enabled
     url_to_use = oas_sandbox_url if switchboard else oas_url
-    auth_url = f"{url_to_use}authorize"
 
     # try authorization
-    token, success = authorize(auth_url, oas_email, oas_password, url_to_use)
-
+    token, success = authorize(oas_email, oas_password, url_to_use)
     if not success:
         return
 
 
-def authorize(auth_url, oas_email, oas_password, url_to_use):
+def authorize(oas_email, oas_password, url_to_use):
     """
     Obtain a bearer token from the OA Switchboard
-    :param auth_url: the URL to authorize with
     :param oas_email: the email to use
     :param oas_password: the password to use
     :param url_to_use: the base URL to use
     :return:
     """
+
+    if not url_to_use.enswith("/"):
+        url_to_use += "/"
+
+    auth_url = f"{url_to_use}authorize"
     authorization_json = build_authorization_json(oas_email, oas_password)
 
     r = requests.post(
