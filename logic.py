@@ -14,13 +14,20 @@ logger = get_logger(__name__)
 
 
 def publication_event_handler(**kwargs):
-    request: [HttpRequest, None] = kwargs.get("request", None)
+    request = kwargs.get("request", None)
     article = kwargs.get("article", None)
 
-    if request is None or article is None:
+    if request is None:
         logger.warning(
-            f"Received article published notification on {article.title} "
-            f"but there was no request or article object."
+            "Received article published notification"
+            "but there was no request object."
+        )
+        return
+
+    if article is None:
+        logger.warning(
+            "Received article published notification"
+            "but there was no article object."
         )
         return
 
