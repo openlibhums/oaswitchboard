@@ -57,14 +57,14 @@ def publication_event_handler(**kwargs):
 
     # build the payload message
     payload = build_payload(article)
-
     print(payload)
+
+    # send the payload
 
 
 def build_header():
     """
     Build the header for the OA Switchboard
-    :param article: the article to build the header for
     """
     return {
         "type": "p1",
@@ -136,12 +136,46 @@ def build_authors(article):
     return authors
 
 
+def build_funders(article):
+    """
+    Build the funders for the OA Switchboard
+    :param article: the article to build the funders for
+    """
+    funders = []
+    for funder in article.funders:
+        funders.append(
+            {
+                "name": funder.name,
+                "ror": funder.ror if hasattr(funder, "ror") else "",
+            }
+        )
+
+    return funders
+
+
+def build_article(article):
+    """
+    Build the article for the OA Switchboard
+    :param article: the article to build the article for
+    """
+    return {
+        "title": article.title,
+        "doi": article.doi,
+        "type": article.jats_article_type,
+        "funders": build_funders(article),
+    }
+
+
 def build_data(article):
     """
     Build the data for the OA Switchboard
     :param article: the article to build the data for
     """
-    return {"timing": "VoR", "authors": build_authors(article)}
+    return {
+        "timing": "VoR",
+        "authors": build_authors(article),
+        "article": build_article(article),
+    }
 
 
 def build_payload(article):
@@ -200,7 +234,11 @@ def authorize(oas_email, oas_password, url_to_use):
         return None, False
 
     token = authorization_response.get("token", None)
-    organisation = authorization_response.get("organisation", None)
+    participant = authorization_response.get("participant", None)
+    organisation = (
+        participant.get("organisation", None) if participant else None
+    )
+
     logger.info(f"Logged in to OA Switchboard as {organisation}")
 
     return token, True
