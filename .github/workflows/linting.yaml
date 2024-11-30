@@ -3,14 +3,6 @@ on:
   - push
 
 jobs:
-  isort:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: isort/isort-action@v1
-        with:
-            requirements-files: "requirements.txt"
-            configuration: "--check-only --profile=black --line-length=79"
   formatting:
     runs-on: ubuntu-latest
     steps:
