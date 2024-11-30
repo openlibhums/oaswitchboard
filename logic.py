@@ -6,7 +6,6 @@ __maintainer__ = "Birkbeck University of London"
 import json
 
 import requests
-from django.http import HttpRequest
 from utils import setting_handler
 from utils.logger import get_logger
 
@@ -14,6 +13,10 @@ logger = get_logger(__name__)
 
 
 def publication_event_handler(**kwargs):
+    """
+    The main entry point for the OA Switchboard plugin
+    :param kwargs: the keyword arguments that include request and article
+    """
     request = kwargs.get("request", None)
     article = kwargs.get("article", None)
 
@@ -52,6 +55,105 @@ def publication_event_handler(**kwargs):
     if not success:
         return
 
+    # build the payload message
+    payload = build_payload(article)
+
+    print(payload)
+
+
+def build_header():
+    """
+    Build the header for the OA Switchboard
+    :param article: the article to build the header for
+    """
+    return {
+        "type": "p1",
+        "version": "v2",
+        "to": {
+            "address": "https://ror.org/broadcast",
+        },
+        "persistent": True,
+        "pio": True,
+    }
+
+
+def build_credit(article, author):
+    """
+    Build the CRediT block if it exists
+    :param article: the article
+    :param author: the author
+    :return:
+    """
+    return (
+        article.credit_roles_frozen[author]
+        if hasattr(article, "credit_roles_frozen")
+        else []
+    )
+
+
+def build_ror(author):
+    """
+    Build the ROR item if it exists
+    :param author: the author to build the ROR for
+    """
+    affil = author.affiliation()
+
+    if hasattr(affil, "organization"):
+        org = affil.organization
+    else:
+        return ""
+
+    return org.ror if hasattr(org, "ror") else ""
+
+
+def build_authors(article):
+    """
+    Build the authors for the OA Switchboard
+    :param article: the article to build the authors for
+    """
+    authors = []
+    author_list = article.frozen_authors()
+    for author in author_list:
+        authors.append(
+            {
+                "listingorder": author.order + 1,
+                "lastName": author.last_name,
+                "firstName": author.first_name,
+                "ORCID": author.frozen_orcid,
+                "creditroles": build_credit(article, author),
+                "isCorrespondingAuthor": author.is_correspondence_author,
+                "institutions": [
+                    {
+                        "sourceaffiliation": author.affiliation(),
+                        "name": author.affiliation(),
+                        "ror": build_ror(author),
+                    }
+                ],
+                "affiliation": author.affiliation(),
+            }
+        )
+
+    return authors
+
+
+def build_data(article):
+    """
+    Build the data for the OA Switchboard
+    :param article: the article to build the data for
+    """
+    return {"timing": "VoR", "authors": build_authors(article)}
+
+
+def build_payload(article):
+    """
+    Build the payload for the OA Switchboard
+    :param article: the article to build the payload for
+    """
+    return {
+        "header": build_header(),
+        "data": build_data(article),
+    }
+
 
 def authorize(oas_email, oas_password, url_to_use):
     """
@@ -62,7 +164,7 @@ def authorize(oas_email, oas_password, url_to_use):
     :return:
     """
 
-    if not url_to_use.enswith("/"):
+    if not url_to_use.endswith("/"):
         url_to_use += "/"
 
     auth_url = f"{url_to_use}authorize"
@@ -116,7 +218,7 @@ def build_authorization_json(oas_email, oas_password):
     }
 
 
-def get_plugin_settings(request: HttpRequest):
+def get_plugin_settings(request):
     """
     Get the plugin settings for the OA Switchboard plugin
     :param request: the request object
