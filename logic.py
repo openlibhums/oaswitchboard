@@ -7,9 +7,8 @@ import json
 
 import requests
 from django.http import HttpRequest
-from utils.logger import get_logger
-
 from utils import setting_handler
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
