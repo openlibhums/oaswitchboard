@@ -13,6 +13,7 @@ import requests
 from utils import setting_handler
 from utils.logger import get_logger
 from django.contrib import messages
+from plugins.oas.models import SwitchboardMessage
 
 logger = get_logger(__name__)
 
@@ -41,6 +42,10 @@ def publication_event_handler(**kwargs):
 
     logger.info(f"Received article published notification on {article.title}")
 
+    switchboard_message = SwitchboardMessage()
+    switchboard_message.broadcast = True
+    switchboard_message.article = article
+
     # get the per-journal settings for the plugin
     (
         oas_enabled,
@@ -60,6 +65,8 @@ def publication_event_handler(**kwargs):
     # try authorization
     token, success = authorize(oas_email, oas_password, url_to_use)
     if not success:
+        switchboard_message.authorized = False
+        switchboard_message.save()
         messages.add_message(
             request,
             messages.ERROR,
@@ -67,19 +74,29 @@ def publication_event_handler(**kwargs):
         )
         return
 
+    switchboard_message.authorized = True
+
     # build the payload message
     payload = build_payload(article)
 
     # send the payload
     json_output, success = send_payload(payload, token, url_to_use)
 
+    switchboard_message.message = payload
+    switchboard_message.response = json_output
+
     if success:
+        switchboard_message.success = True
+        switchboard_message.save()
         messages.add_message(
             request,
             messages.SUCCESS,
             "p1-pio message sent to OA Switchboard.",
         )
         return
+
+    switchboard_message.success = False
+    switchboard_message.save()
 
     messages.add_message(
         request,

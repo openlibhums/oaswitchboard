@@ -5,25 +5,44 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('submission', '0085_alter_article_jats_article_type_override_and_more'),
+        (
+            "submission",
+            "0085_alter_article_jats_article_type_override_and_more",
+        ),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='SwitchboardMessage',
+            name="SwitchboardMessage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('broadcast', models.BooleanField(default=True)),
-                ('message_type', models.CharField(default='p1-pio', max_length=255)),
-                ('authorized', models.BooleanField(default=False)),
-                ('message', models.TextField()),
-                ('response', models.TextField()),
-                ('message_date_time', models.DateTimeField(auto_now_add=True)),
-                ('article', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='submission.article')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("broadcast", models.BooleanField(default=True)),
+                (
+                    "message_type",
+                    models.CharField(default="p1-pio", max_length=255),
+                ),
+                ("authorized", models.BooleanField(default=False)),
+                ("message", models.TextField()),
+                ("response", models.TextField()),
+                ("message_date_time", models.DateTimeField(auto_now_add=True)),
+                (
+                    "article",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="submission.article",
+                    ),
+                ),
             ],
         ),
     ]

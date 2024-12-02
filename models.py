@@ -23,3 +23,4 @@ class SwitchboardMessage(models.Model):
     response = models.TextField()
 
     message_date_time = models.DateTimeField(auto_now_add=True)
+    success = models.BooleanField(default=False)
