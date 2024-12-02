@@ -44,7 +44,12 @@ def hook_registry():
     """
     Register the plugin hooks
     """
-    OasPlugin.hook_registry()
+    return {
+        "journal_editor_nav_block": {
+            "module": "plugins.oas.hooks",
+            "function": "menu_hook",
+        },
+    }
 
 
 def register_for_events():

@@ -60,27 +60,60 @@ def publication_event_handler(**kwargs):
     # try authorization
     token, success = authorize(oas_email, oas_password, url_to_use)
     if not success:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Failed to authorize with OA Switchboard.",
+        )
         return
 
     # build the payload message
     payload = build_payload(article)
 
     # send the payload
-    headers = {"Authorization": "Bearer " + token}
+    json_output, success = send_payload(payload, token, url_to_use)
 
-    message_url = f"{url_to_use}message"
-    r = requests.post(
-        message_url, headers=headers, data=json.dumps(payload), timeout=30
-    )
-
-    if r.status_code == 200:
+    if success:
         messages.add_message(
             request,
             messages.SUCCESS,
             "p1-pio message sent to OA Switchboard.",
         )
+        return
 
-    print(r.content)
+    messages.add_message(
+        request,
+        messages.ERROR,
+        "Failed to send p1-pio message to OA Switchboard: "
+        + [item for item in json_output["errorMessage"]],
+    )
+
+
+def send_payload(payload, token, url_to_use):
+    """
+    Send the payload to the OA Switchboard
+    :param payload: the payload to send
+    :param token: the bearer token to use
+    :param url_to_use: the base URL to use
+    """
+    headers = {"Authorization": "Bearer " + token}
+    message_url = f"{url_to_use}message"
+
+    r = requests.post(
+        message_url, headers=headers, data=json.dumps(payload), timeout=30
+    )
+
+    json_output = r.json()
+
+    if r.status_code == 200:
+        return json_output, False
+
+    is_errored = json_output.get("error", False)
+
+    if is_errored:
+        return json_output, False
+
+    return json_output, True
 
 
 def build_header():
@@ -311,7 +344,9 @@ def authorize(oas_email, oas_password, url_to_use):
     authorization_json = build_authorization_json(oas_email, oas_password)
 
     r = requests.post(
-        f"{url_to_use}authorize", data=json.dumps(authorization_json)
+        f"{url_to_use}authorize",
+        data=json.dumps(authorization_json),
+        timeout=30,
     )
 
     if r.status_code != 200:
