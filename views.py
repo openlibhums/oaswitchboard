@@ -1,3 +1,7 @@
+"""
+Views for the OAS plugin.
+"""
+
 __copyright__ = "Copyright 2024 Birkbeck, University of London"
 __author__ = "Martin Paul Eve"
 __license__ = "AGPL v3"
@@ -10,6 +14,10 @@ from oas.logic import get_plugin_settings, save_plugin_settings
 
 
 def manager(request):
+    """
+    The manager view for the OAS plugin.
+    :param request: the request object
+    """
     (
         oas_enabled,
         oas_email,

@@ -1,3 +1,7 @@
+"""
+Forms for the OAS plugin.
+"""
+
 __copyright__ = "Copyright 2024 Birkbeck, University of London"
 __author__ = "Martin Paul Eve"
 __license__ = "AGPL v3"
@@ -7,6 +11,10 @@ from django import forms
 
 
 class OASManagerForm(forms.Form):
+    """
+    The form for the OAS manager.
+    """
+
     enabled = forms.BooleanField(
         required=False, help_text="Whether to send p1-pio messages."
     )

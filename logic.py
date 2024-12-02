@@ -1,3 +1,7 @@
+"""
+Implements the logic for the OA Switchboard plugin
+"""
+
 __copyright__ = "Copyright 2024 Birkbeck, University of London"
 __author__ = "Martin Paul Eve"
 __license__ = "AGPL v3"
@@ -8,6 +12,7 @@ import json
 import requests
 from utils import setting_handler
 from utils.logger import get_logger
+from django.contrib import messages
 
 logger = get_logger(__name__)
 
@@ -49,6 +54,8 @@ def publication_event_handler(**kwargs):
     # setup switchboard option
     switchboard = oas_sandbox and oas_enabled
     url_to_use = oas_sandbox_url if switchboard else oas_url
+    if not url_to_use.endswith("/"):
+        url_to_use += "/"
 
     # try authorization
     token, success = authorize(oas_email, oas_password, url_to_use)
@@ -57,9 +64,23 @@ def publication_event_handler(**kwargs):
 
     # build the payload message
     payload = build_payload(article)
-    print(payload)
 
     # send the payload
+    headers = {"Authorization": "Bearer " + token}
+
+    message_url = f"{url_to_use}message"
+    r = requests.post(
+        message_url, headers=headers, data=json.dumps(payload), timeout=30
+    )
+
+    if r.status_code == 200:
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "p1-pio message sent to OA Switchboard.",
+        )
+
+    print(r.content)
 
 
 def build_header():
@@ -147,10 +168,61 @@ def build_funders(article):
             {
                 "name": funder.name,
                 "ror": funder.ror if hasattr(funder, "ror") else "",
+                "fundref": funder.fundref_id
+                if hasattr(funder, "fundref_id")
+                else "",
             }
         )
 
     return funders
+
+
+def build_preprint(article):
+    """
+    Build the preprint for the OA Switchboard
+    :param article: the article to build the preprint for
+    """
+    if article.preprint_journal_article:
+        return {
+            "title": article.preprint_journal_article.title,
+            "url": article.preprint_journal_article.url,
+        }
+
+    return None
+
+
+def build_license(article):
+    """
+    Build the license for the OA Switchboard
+    :param article: the article to build the license for
+    """
+    allowed_licenses = [
+        "CC BY",
+        "CC BY-ND",
+        "CC BY-NC",
+        "CC BY-NC-SA",
+        "CC BY-NC-ND",
+        "CC BY-IGO",
+        "CC BY-not specified",
+        "CC BY-other",
+        "CC0",
+        "non-CC",
+        "not specified",
+    ]
+
+    license_to_use = "not specified"
+
+    for license_string in allowed_licenses:
+        if article.license.short_name.startswith(license_string):
+            license_to_use = license_string
+
+    license_to_use = (
+        "non-CC"
+        if article.license.short_name == "Copyright"
+        else license_to_use
+    )
+
+    return license_to_use
 
 
 def build_article(article):
@@ -158,11 +230,48 @@ def build_article(article):
     Build the article for the OA Switchboard
     :param article: the article to build the article for
     """
-    return {
+    preprint = build_preprint(article)
+
+    return_value = {
         "title": article.title,
-        "doi": article.doi,
+        "doi": article.identifier.identifier,
         "type": article.jats_article_type,
         "funders": build_funders(article),
+        "manuscript": {
+            "dates": {
+                "submission": f"{article.date_submitted.year}-"
+                f"{article.date_submitted.month}-"
+                f"{article.date_submitted.day}",
+                "acceptance": f"{article.date_accepted.year}-"
+                f"{article.date_accepted.month}-"
+                f"{article.date_accepted.day}",
+                "publication": f"{article.date_published.year}-"
+                f"{article.date_published.month}-"
+                f"{article.date_published.day}",
+            }
+        },
+        "vor": {
+            "license": build_license(article),
+            "publication": "pure OA journal",
+        },
+    }
+
+    if preprint:
+        return_value["preprint"] = preprint
+
+    return return_value
+
+
+def build_journal(article):
+    """
+    Build the journal for the OA Switchboard
+    :param article: the article to build the journal for
+    """
+    return {
+        "name": article.journal.name,
+        "issn": article.journal.print_issn,
+        "eissn": article.journal.issn,
+        "id": article.journal.code,
     }
 
 
@@ -175,6 +284,7 @@ def build_data(article):
         "timing": "VoR",
         "authors": build_authors(article),
         "article": build_article(article),
+        "journal": build_journal(article),
     }
 
 
@@ -197,10 +307,6 @@ def authorize(oas_email, oas_password, url_to_use):
     :param url_to_use: the base URL to use
     :return:
     """
-
-    if not url_to_use.endswith("/"):
-        url_to_use += "/"
-
     auth_url = f"{url_to_use}authorize"
     authorization_json = build_authorization_json(oas_email, oas_password)
 

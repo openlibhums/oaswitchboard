@@ -1,3 +1,7 @@
+"""
+This file is used to define the URL patterns for the OAS plugin.
+"""
+
 from django.urls import re_path
 from plugins.oas import views
 

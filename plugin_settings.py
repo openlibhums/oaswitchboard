@@ -1,3 +1,7 @@
+"""
+The pluin setup and settings file for the OAS plugin.
+"""
+
 from events import logic as events_logic
 from utils import plugins
 from utils.install import update_settings
@@ -13,6 +17,10 @@ JANEWAY_VERSION = "1.7.0"
 
 
 class OasPlugin(plugins.Plugin):
+    """
+    The plugin class for the OAS plugin
+    """
+
     plugin_name = PLUGIN_NAME
     display_name = DISPLAY_NAME
     description = DESCRIPTION
@@ -25,15 +33,25 @@ class OasPlugin(plugins.Plugin):
 
 
 def install():
+    """
+    Install the plugin
+    """
     OasPlugin.install()
     update_settings(file_path="plugins/oas/install/settings.json")
 
 
 def hook_registry():
+    """
+    Register the plugin hooks
+    """
     OasPlugin.hook_registry()
 
 
 def register_for_events():
+    """
+    Register for events
+    """
+    # note that import must be here to avoid circular imports
     from plugins.oas import logic
 
     events_logic.Events.register_for_event(
