@@ -102,7 +102,7 @@ def publication_event_handler(**kwargs):
         request,
         messages.ERROR,
         "Failed to send p1-pio message to OA Switchboard: "
-        + [item for item in json_output["errorMessage"]],
+        + [item for item in json_output.get("errorMessage", [])],
     )
 
 
@@ -120,10 +120,10 @@ def send_payload(payload, token, url_to_use):
         message_url, headers=headers, data=json.dumps(payload), timeout=30
     )
 
-    json_output = r.json()
-
-    if r.status_code == 200:
-        return json_output, False
+    try:
+        json_output = r.json()
+    except:
+        json_output = {"message": r.content}
 
     is_errored = json_output.get("error", False)
 

@@ -14,7 +14,7 @@ class SwitchboardMessage(models.Model):
     message_type = models.CharField(max_length=255, default="p1-pio")
     authorized = models.BooleanField(default=False)
 
-    article = models.OneToOneField(
+    article = models.ForeignKey(
         "submission.Article",
         on_delete=models.CASCADE,
     )
