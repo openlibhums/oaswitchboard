@@ -7,12 +7,16 @@ __author__ = "Martin Paul Eve"
 __license__ = "AGPL v3"
 __maintainer__ = "Birkbeck University of London"
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render
 from plugins.oas import forms
+from security import decorators
 
 from oas.logic import get_plugin_settings, save_plugin_settings
 
 
+@staff_member_required
+@decorators.has_journal
 def manager(request):
     """
     The manager view for the OAS plugin.
