@@ -19,6 +19,7 @@ class SwitchboardMessageAdmin(ModelAdmin):
 
     list_display = (
         "success",
+        "authorized",
         "broadcast",
         "message_type",
         "article",
@@ -28,6 +29,7 @@ class SwitchboardMessageAdmin(ModelAdmin):
     )
     list_filter = (
         "success",
+        "authorized",
         "broadcast",
         "message_type",
         "article",
