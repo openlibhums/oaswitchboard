@@ -10,7 +10,6 @@ __maintainer__ = "Birkbeck University of London"
 import json
 
 import requests
-import requests.exceptions as exceptions
 from django.contrib import messages
 from plugins.oas.models import SwitchboardMessage
 from utils import setting_handler
@@ -123,7 +122,7 @@ def send_payload(payload, token, url_to_use):
 
     try:
         json_output = r.json()
-    except exceptions.RequestsJSONDecodeError:
+    except Exception:
         json_output = {"message": r.content}
 
     is_errored = json_output.get("error", False)
