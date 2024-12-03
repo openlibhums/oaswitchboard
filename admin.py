@@ -22,6 +22,7 @@ class SwitchboardMessageAdmin(ModelAdmin):
         "authorized",
         "broadcast",
         "message_type",
+        "message_date_time",
         "article",
         "_journal",
         "message",
@@ -32,9 +33,6 @@ class SwitchboardMessageAdmin(ModelAdmin):
         "authorized",
         "broadcast",
         "message_type",
-        "article",
-        "message",
-        "response",
     )
 
     def _journal(self, obj):
