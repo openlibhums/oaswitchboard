@@ -3,7 +3,7 @@ This is a plugin for Janeway that enables [OA Switchboard](https://www.oaswitchb
 
 ![build](https://img.shields.io/github/actions/workflow/status/openlibhums/oaswitchboard/linting.yaml) ![license](https://img.shields.io/github/license/openlibhums/oaswitchboard) ![activity](https://img.shields.io/github/last-commit/openlibhums/oaswitchboard)
 
-![Django](https://img.shields.io/badge/Django-%23FF9900.svg?style=for-the-badge&logo=django&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Django](https://img.shields.io/badge/Django-%23FF9900.svg?style=for-the-badge&logo=django&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Python](https://img.shields.io/badge/janeway-000000?style=for-the-badge&logo=janeway&logoColor=ffdd54)
 
 ## Requirements
 * Janeway 1.7.0 or above (ideally 1.8.0)
