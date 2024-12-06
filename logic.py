@@ -101,8 +101,8 @@ def publication_event_handler(**kwargs):
     messages.add_message(
         request,
         messages.ERROR,
-        "Failed to send p1-pio message to OA Switchboard: "
-        + [item for item in json_output.get("errorMessage", [])],
+        f"Failed to send p1-pio message to OA Switchboard: \
+        {[item in json_output.get('errorMessage', [])]}",
     )
 
 
