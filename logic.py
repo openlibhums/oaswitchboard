@@ -285,7 +285,9 @@ def build_article(article):
     return_value = {
         "title": article.title,
         "doi": article.identifier.identifier,
-        "type": article.jats_article_type,
+        "type": "research-article"
+        if article.jats_article_type is None
+        else article.jats_article_type,
         "funders": build_funders(article),
         "manuscript": {
             "dates": {
