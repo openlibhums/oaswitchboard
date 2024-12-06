@@ -10,6 +10,9 @@ This is a plugin for Janeway that enables [OA Switchboard](https://www.oaswitchb
 * Python 3.10 (tested version)
 * An [OA Switchboard](https://www.oaswitchboard.org/) account and credentials
 
+## Note on Janeway Version Requirements
+When running on Janeway 1.7, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support. For these features, please use Janeway 1.9 or later.
+
 ## Installation
 1. Clone this repository into the Janeway plugins folder.
 2. From the `src` directory run `python3 manage.py install_plugins oas` (or the [equivalent Docker command](https://janeway.readthedocs.io/en/latest/dev/installation.html)).
