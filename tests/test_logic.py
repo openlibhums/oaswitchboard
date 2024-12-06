@@ -32,7 +32,7 @@ class MockResponse(Mock):
 
 class TestPublicationEventHandler(django.test.TestCase):
     def setUp(self):
-        press = helpers.create_press()
+        self.press = helpers.create_press()
         self.journal, _ = helpers.create_journals()
         self.journal.save()
         call_command("load_default_settings")
