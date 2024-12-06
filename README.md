@@ -1,5 +1,5 @@
 # Janeway OA Switchboard Plugin
-This is a plugin for Janeway that enables [OA Switchboard](https://www.oaswitchboard.org/) p1-pio messages to be sent.
+This is a plugin for [Janeway](https://janeway.systems/) that enables [OA Switchboard](https://www.oaswitchboard.org/) p1-pio messages to be sent.
 
 ![build](https://img.shields.io/github/actions/workflow/status/openlibhums/oaswitchboard/linting.yaml) ![license](https://img.shields.io/github/license/openlibhums/oaswitchboard) ![activity](https://img.shields.io/github/last-commit/openlibhums/oaswitchboard)
 
