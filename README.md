@@ -11,7 +11,7 @@ This is a plugin for [Janeway](https://janeway.systems/) that enables [OA Switch
 * An [OA Switchboard](https://www.oaswitchboard.org/) account and credentials
 
 ## Note on Janeway Version Requirements
-When running on Janeway 1.8, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support. For these features, please use a later version.
+When running on Janeway 1.8, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support, so messages will never be delivered. For these features, please use a later version.
 
 ## Installation
 1. Clone this repository into the Janeway plugins folder.
