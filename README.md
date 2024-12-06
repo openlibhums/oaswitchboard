@@ -6,12 +6,12 @@ This is a plugin for [Janeway](https://janeway.systems/) that enables [OA Switch
 ![Django](https://img.shields.io/badge/Django-%23FF9900.svg?style=for-the-badge&logo=django&logoColor=white) ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![Python](https://img.shields.io/badge/janeway-000000?style=for-the-badge&logo=janeway&logoColor=ffdd54)
 
 ## Requirements
-* Janeway 1.7.0 or above (ideally 1.8.0)
+* Janeway 1.8.0 or above
 * Python 3.10 (tested version)
 * An [OA Switchboard](https://www.oaswitchboard.org/) account and credentials
 
 ## Note on Janeway Version Requirements
-When running on Janeway 1.7, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support. For these features, please use Janeway 1.9 or later.
+When running on Janeway 1.8, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support. For these features, please use a later version.
 
 ## Installation
 1. Clone this repository into the Janeway plugins folder.
