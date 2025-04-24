@@ -14,7 +14,7 @@ This is a plugin for [Janeway](https://janeway.systems/) that enables [OA Switch
 When running on Janeway 1.8, the plugin will send messages to the OA Switchboard, but without CRediT or ROR support, so messages will never be delivered. For these features, please use a later version.
 
 ## Installation
-1. Clone this repository into the Janeway plugins folder.
+1. Clone this repository into the Janeway plugins folder as `oas` -- note that this is different from the repository name.
 2. From the `src` directory run `python3 manage.py install_plugins oas` (or the [equivalent Docker command](https://janeway.readthedocs.io/en/latest/dev/installation.html)).
 3. Run the Janeway command  for running required migrations: `python3 manage.py migrate`
 4. Restart your server (Apache, Passenger, etc)
