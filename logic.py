@@ -155,26 +155,25 @@ def build_credit(article, author):
     :param author: the author
     :return:
     """
-    return (
-        article.credit_roles_frozen[author]
-        if hasattr(article, "credit_roles_frozen")
-        else []
-    )
+    if hasattr(article, "authors_and_credits"):
+        credit_queryset = article.authors_and_credits().get(author, [])
+        return [str(record) for record in credit_queryset]
+    else:
+        return []
 
 
-def build_ror(author):
+def build_institutions(author):
     """
-    Build the ROR item if it exists
+    Build the institution item if it exists
     :param author: the author to build the ROR for
     """
-    affil = author.affiliation()
-
-    if hasattr(affil, "organization"):
-        org = affil.organization
-    else:
-        return ""
-
-    return org.ror if hasattr(org, "ror") else ""
+    affil = author.primary_affiliation(as_object=True)
+    institution = {
+        "sourceAffiliation": str(affil),
+        "name": str(affil.organization.name) if affil.organization else "",
+        "ror": affil.organization.uri if affil.organization else "",
+    }
+    return [institution]
 
 
 def build_authors(article):
@@ -193,14 +192,8 @@ def build_authors(article):
                 "ORCID": author.frozen_orcid,
                 "creditroles": build_credit(article, author),
                 "isCorrespondingAuthor": author.is_correspondence_author,
-                "institutions": [
-                    {
-                        "sourceaffiliation": author.affiliation(),
-                        "name": author.affiliation(),
-                        "ror": build_ror(author),
-                    }
-                ],
-                "affiliation": author.affiliation(),
+                "institutions": build_institutions(author),
+                "affiliation": author.primary_affiliation(as_object=False),
             }
         )
 
