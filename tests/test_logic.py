@@ -34,6 +34,7 @@ class TestPublicationEventHandler(django.test.TestCase):
     def setUp(self):
         self.press = helpers.create_press()
         self.journal, _ = helpers.create_journals()
+        helpers.create_roles(["author"])
         self.journal.save()
         call_command("load_default_settings")
         self.journal.publisher = "oas"
