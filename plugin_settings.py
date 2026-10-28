@@ -10,10 +10,10 @@ PLUGIN_NAME = "OA Switchboard Plugin"
 DISPLAY_NAME = "OA Switchboard"
 DESCRIPTION = "Support for OA Switchboard functionality"
 AUTHOR = "Martin Paul Eve"
-VERSION = "0.1"
+VERSION = "0.2.0"
 SHORT_NAME = "oas"
 MANAGER_URL = "oas_manager"
-JANEWAY_VERSION = "1.7.0"
+JANEWAY_VERSION = "1.8.0"
 
 
 class OasPlugin(plugins.Plugin):
